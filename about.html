@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intro — Niketh Sai</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">NIKETH</div>
+  <nav class="nav-links">
+    <a href="index.html" class="active">INTRO</a>
+    <a href="projects.html">THE BUILDS</a>
+    <a href="experience.html">JOURNEY</a>
+    <a href="education.html">THE LAB</a>
+  </nav>
+</header>
+
+<main>
+  <section id="about" class="content-section">
+    <div class="section-inner">
+      <h2 class="section-title">INTRO</h2>
+      <div class="section-body">
+        <p>
+          I'm a recent B.Tech Computer Science (AI &amp; ML) graduate from
+          Hyderabad, building production-minded AI systems — retrieval-augmented
+          generation, explainable reasoning pipelines, and offline-first
+          architectures. My stack runs FastAPI backends, React interfaces,
+          vector search, and local LLM inference.
+        </p>
+        <br>
+        <p>
+          I care about systems that are legible: retrieval over hallucination,
+          confidence scores over blind trust, local inference over unnecessary
+          third-party dependence. Currently seeking fresher roles in Data
+          Science, Generative AI, and AI/ML Engineering.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="content-section">
+    <div class="section-inner">
+      <h2 class="section-title">THE BUILDS</h2>
+      <div class="projects-grid">
+        <article class="proj-card">
+          <div class="proj-header">
+            <span class="proj-num">01</span>
+            <span class="proj-dash">—</span>
+            <h3 class="proj-title">Cognivis</h3>
+          </div>
+          <p class="proj-tag">Explainable AI platform</p>
+          <p class="proj-desc">
+            Reasoning layer surfacing chain-of-thought traces, multi-path
+            self-consistency checks, and calibrated confidence on every answer.
+          </p>
+          <div class="proj-stack">
+            <span>xai</span><span>fastapi</span><span>react</span>
+          </div>
+        </article>
+
+        <article class="proj-card">
+          <div class="proj-header">
+            <span class="proj-num">02</span>
+            <span class="proj-dash">—</span>
+            <h3 class="proj-title">MedIntel</h3>
+          </div>
+          <p class="proj-tag">AI healthcare assistant</p>
+          <p class="proj-desc">
+            A full-stack clinical assistant that reads handwritten prescriptions,
+            extracts medical entities, and answers questions grounded in
+            retrieved documents rather than model guesswork.
+          </p>
+          <div class="proj-stack">
+            <span>fastapi</span><span>react</span><span>rag</span><span>faiss</span><span>biobert</span><span>trocr</span>
+          </div>
+        </article>
+
+        <article class="proj-card">
+          <div class="proj-header">
+            <span class="proj-num">03</span>
+            <span class="proj-dash">—</span>
+            <h3 class="proj-title">SQL Co-Pilot</h3>
+          </div>
+          <p class="proj-tag">Natural language to SQL, fully offline</p>
+          <p class="proj-desc">
+            Local NL-to-SQL system that introspects any database schema
+            automatically and self-corrects failed queries — no cloud API
+            required.
+          </p>
+          <div class="proj-stack">
+            <span>ollama</span><span>local-llm</span><span>python</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills" class="content-section skills-section">
+    <div class="section-inner skills-inner">
+      <h2 class="section-title">SKILLS / TOOLS</h2>
+      <div class="skills-grid">
+
+        <div class="skill-card">
+          <div class="skill-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+            </svg>
+          </div>
+          <h3 class="skill-card-title">Languages &amp; Core</h3>
+          <div class="skill-tags">
+            <span>Python</span><span>SQL</span><span>JavaScript</span>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+            </svg>
+          </div>
+          <h3 class="skill-card-title">AI / ML</h3>
+          <div class="skill-tags">
+            <span>RAG</span><span>NLP</span><span>BioBERT</span><span>TrOCR</span><span>XAI</span>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+            </svg>
+          </div>
+          <h3 class="skill-card-title">Backend &amp; APIs</h3>
+          <div class="skill-tags">
+            <span>FastAPI</span><span>REST APIs</span>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+            </svg>
+          </div>
+          <h3 class="skill-card-title">Frontend</h3>
+          <div class="skill-tags">
+            <span>React</span><span>HTML</span><span>CSS</span>
+          </div>
+        </div>
+
+        <div class="skill-card">
+          <div class="skill-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/>
+            </svg>
+          </div>
+          <h3 class="skill-card-title">Retrieval</h3>
+          <div class="skill-tags">
+            <span>FAISS</span><span>Sentence-Transformers</span><span>Ollama</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Builds — Niketh Sai</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="projects-page">
+
+<header class="navbar">
+  <div class="logo">NIKETH</div>
+  <nav class="nav-links">
+    <a href="index.html">INTRO</a>
+    <a href="projects.html" class="active">THE BUILDS</a>
+    <a href="experience.html">JOURNEY</a>
+    <a href="education.html">THE LAB</a>
+  </nav>
+</header>
+
+<main>
+  <section id="projects" class="content-section">
+    <div class="section-inner">
+      <h2 class="section-title">THE BUILDS</h2>
+      <p class="section-subtitle">ENGINEERED SYSTEMS &middot; PROTOTYPES &middot; EXPERIMENTS</p>
+
+      <!-- Filter Buttons -->
+      <div class="filter-container">
+        <button class="filter-btn active" data-filter="all">ALL</button>
+        <button class="filter-btn" data-filter="ai-ml">AI / ML</button>
+        <button class="filter-btn" data-filter="genai">GENAI</button>
+        <button class="filter-btn" data-filter="experiments">EXPERIMENTS</button>
+        <button class="filter-btn" data-filter="mini-builds">MINI BUILDS</button>
+      </div>
+
+      <!-- Projects Grid (Dynamic) -->
+      <div class="projects-grid" id="projectsGrid">
+        <!-- Projects will be rendered here by JavaScript -->
+      </div>
+
+      <div style="margin-top: 45px; display: flex; justify-content: flex-start;">
+        <a href="index.html" class="pill-btn" style="text-decoration: none; font-size: 0.75rem; padding: 13px 30px;">
+          <span class="btn-arrow btn-arrow-left" style="margin-right: 4px; margin-left: 0;">&larr;</span>
+          <span>BACK TO INTRO</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  // Project Data
+  const projectsData = [
+    {
+      name: "Hybrid Search Engine",
+      description: "Combined keyword and semantic search system for improved document retrieval accuracy.",
+      tags: ["python", "elasticsearch", "sentence-transformers", "faiss"],
+      classification: "PROJECT",
+      filters: ["ai-ml"],
+      github: "https://github.com/niketh-sai/Hybrid-Search-Engine"
+    },
+    {
+      name: "ExAI",
+      description: "Explainable AI framework providing interpretability and transparency for ML model decisions.",
+      tags: ["python", "xai", "shap", "lime", "sklearn"],
+      classification: "PROJECT",
+      filters: ["ai-ml"],
+      github: "https://github.com/niketh-sai/ExAI"
+    },
+    {
+      name: "NeuralNews",
+      description: "Automated news aggregation and classification system using neural networks.",
+      tags: ["python", "nlp", "transformers", "fastapi"],
+      classification: "PROJECT",
+      filters: ["ai-ml"],
+      github: "https://github.com/niketh-sai/NeuralNews"
+    },
+    {
+      name: "Cyberbullying Detection System",
+      description: "ML-powered system detecting cyberbullying patterns in social media text data.",
+      tags: ["python", "nlp", "text-classification", "bert"],
+      classification: "PROJECT",
+      filters: ["ai-ml"],
+      github: "https://github.com/niketh-sai/Cyberbullying-Detection-System"
+    },
+    {
+      name: "Decision Tree",
+      description: "Implementation of decision tree algorithm from scratch with visualization capabilities.",
+      tags: ["python", "machine-learning", "data-structures", "visualization"],
+      classification: "PROJECT",
+      filters: ["ai-ml"],
+      github: "https://github.com/niketh-sai/Decision-Tree"
+    },
+    {
+      name: "DocRAG",
+      description: "Fully offline RAG system for querying local documents without third-party APIs.",
+      tags: ["rag", "faiss", "sentence-transformers", "ollama", "python"],
+      classification: "PROJECT",
+      filters: ["genai"],
+      github: "https://github.com/niketh-sai/DocRAG"
+    },
+    {
+      name: "Tic-Tac-Toe",
+      description: "Classic game implementation with minimax algorithm and AI opponent.",
+      tags: ["python", "game-ai", "minimax", "algorithms"],
+      classification: "MINI BUILD",
+      filters: ["mini-builds"],
+      github: "https://github.com/niketh-sai/Tic-Tac-Toe"
+    },
+    {
+      name: "Rock Paper Scissors",
+      description: "Interactive game with pattern recognition and adaptive AI strategies.",
+      tags: ["python", "game-ai", "pattern-recognition"],
+      classification: "MINI BUILD",
+      filters: ["mini-builds"],
+      github: "https://github.com/niketh-sai/Rock-Paper-Scissors"
+    },
+    {
+      name: "QLoRA Fine-Tuning Tests",
+      description: "Experiments with QLoRA quantization for efficient LLM fine-tuning on consumer hardware.",
+      tags: ["python", "qlora", "fine-tuning", "llm", "pytorch"],
+      classification: "EXPERIMENT",
+      filters: ["experiments"],
+      github: null
+    }
+  ];
+
+  // Render Projects
+  function renderProjects(filter = 'all') {
+    const grid = document.getElementById('projectsGrid');
+
+    // Fade out existing cards
+    const existingCards = grid.querySelectorAll('.proj-card');
+    existingCards.forEach(card => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(10px)';
+    });
+
+    // Wait for fade out, then render new cards
+    setTimeout(() => {
+      grid.innerHTML = '';
+
+      const filteredProjects = filter === 'all'
+        ? projectsData
+        : projectsData.filter(project => project.filters.includes(filter));
+
+      filteredProjects.forEach((project, index) => {
+        const card = document.createElement('article');
+        card.className = 'proj-card';
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(10px)';
+
+        const tagsHtml = project.tags.map(tag => `<span>${tag}</span>`).join('');
+        const githubLink = project.github
+          ? `<a href="${project.github}" target="_blank" rel="noopener noreferrer" class="proj-github-link">VIEW SOURCE <span class="link-arrow">↗</span></a>`
+          : '';
+
+        card.innerHTML = `
+          <div class="proj-header">
+            <span class="proj-classification">${project.classification}</span>
+            <h3 class="proj-title">${project.name}</h3>
+          </div>
+          <p class="proj-desc">${project.description}</p>
+          <div class="proj-stack">${tagsHtml}</div>
+          ${githubLink}
+        `;
+
+        grid.appendChild(card);
+
+        // Staggered fade in
+        setTimeout(() => {
+          card.style.transition = 'opacity 300ms ease, transform 300ms ease';
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, index * 50);
+      });
+    }, 150);
+  }
+
+  // Filter Event Listeners
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Update active state
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Filter projects
+      const filter = btn.dataset.filter;
+      renderProjects(filter);
+    });
+  });
+
+  // Initial render
+  renderProjects();
+
+  // Initial render
+  renderProjects();
+</script>
+
+<script src="script.js"></script>
+</body>
+</html>
