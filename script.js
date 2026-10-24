@@ -1,4 +1,9 @@
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+
   // Preloader removal handled by CSS animation (fadeOut) & sessionStorage
   const preloader = document.getElementById("preloader");
   if (preloader) {
@@ -30,6 +35,197 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Reduced motion: skip animations entirely and reveal immediately
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Niketh dust disintegration animation
+  class NikethDustDisintegration {
+    constructor() {
+      this.wrap = document.querySelector('.first-name-wrap');
+      this.text = document.getElementById('heroFirstName');
+      this.canvas = document.getElementById('firstNameCanvas');
+      if (!this.wrap || !this.text || !this.canvas) return;
+
+      this.ctx = this.canvas.getContext('2d');
+      this.particlesLower = [];
+      this.particlesUpper = [];
+      this.animating = false;
+      this.direction = 0;
+      this.progress = 0;
+      this.duration = 950;
+      this.startTime = 0;
+      this.prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      this.rafId = null;
+
+      if (this.prefersReduced) return;
+
+      this.wrap.addEventListener('mouseenter', () => this.play('toUpper'));
+      this.wrap.addEventListener('mouseleave', () => this.play('toLower'));
+
+      const init = () => {
+        const rect = this.wrap.getBoundingClientRect();
+        if (rect.width > 0 && rect.height > 0) {
+          this.initCanvas();
+        } else {
+          setTimeout(init, 100);
+        }
+      };
+
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(init);
+      } else {
+        window.addEventListener('load', init);
+      }
+
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => this.initCanvas(), 150);
+      });
+    }
+
+    initCanvas() {
+      const rect = this.wrap.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
+
+      const style = window.getComputedStyle(this.text);
+      const fontSize = parseFloat(style.fontSize);
+      const fontWeight = style.fontWeight;
+      const fontFamily = style.fontFamily;
+      const letterSpacing = style.letterSpacing;
+
+      const extra = Math.round(fontSize * 2.5);
+      this.cssW = Math.ceil(rect.width + extra);
+      this.cssH = Math.ceil(rect.height + extra * 0.6);
+
+      this.canvas.style.width = this.cssW + 'px';
+      this.canvas.style.height = this.cssH + 'px';
+
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      this.dpr = dpr;
+      this.canvas.width = Math.round(this.cssW * dpr);
+      this.canvas.height = Math.round(this.cssH * dpr);
+      this.ctx.scale(dpr, dpr);
+
+      this.offX = extra / 2;
+      this.offY = extra * 0.3;
+
+      this.sample('Niketh', fontSize, fontWeight, fontFamily, letterSpacing, 'lower');
+      this.sample('NIKETH', fontSize, fontWeight, fontFamily, letterSpacing, 'upper');
+    }
+
+    sample(text, fontSize, fontWeight, fontFamily, letterSpacing, type) {
+      const off = document.createElement('canvas');
+      off.width = Math.ceil(fontSize * 10);
+      off.height = Math.ceil(fontSize * 2);
+      const octx = off.getContext('2d');
+      octx.fillStyle = '#ffffff';
+      octx.font = fontWeight + ' ' + fontSize + 'px ' + fontFamily;
+      octx.textBaseline = 'top';
+      octx.letterSpacing = letterSpacing || '0px';
+      octx.fillText(text, 2, 2);
+
+      const img = octx.getImageData(0, 0, off.width, off.height).data;
+      const particles = [];
+
+      const step = 2;
+      for (let y = 0; y < off.height; y += step) {
+        for (let x = 0; x < off.width; x += step) {
+          const idx = (y * off.width + x) * 4;
+          if (img[idx + 3] > 100) {
+            const tx = x - off.width / 2;
+            const ty = y - fontSize * 0.1;
+            const px = this.offX + (this.cssW / 2) + tx;
+            const py = this.offY + (this.cssH / 2) + ty;
+            particles.push({
+              x: px, y: py,
+              ox: px, oy: py,
+              vx: (Math.random() - 0.4) * 1.8,
+              vy: - (Math.random() * 1.2 + 0.4),
+              size: Math.random() * 1.2 + 0.6,
+              alpha: Math.random() * 0.6 + 0.4
+            });
+          }
+        }
+      }
+
+      if (type === 'lower') this.particlesLower = particles;
+      else this.particlesUpper = particles;
+    }
+
+    play(dir) {
+      if (this.prefersReduced) return;
+      if (this.animating && ((dir === 'toUpper' && this.direction === 1) || (dir === 'toLower' && this.direction === -1))) return;
+      this.direction = dir === 'toUpper' ? 1 : -1;
+      this.progress = dir === 'toUpper' ? 0 : 1;
+      this.animating = true;
+      this.startTime = performance.now();
+      if (!this.rafId) this.animate();
+    }
+
+    animate(now) {
+      if (!this.startTime) this.startTime = now;
+      const elapsed = now - this.startTime;
+      const t = Math.min(elapsed / this.duration, 1);
+      const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+      this.progress = this.direction === 1 ? eased : 1 - eased;
+
+      this.ctx.clearRect(0, 0, this.cssW, this.cssH);
+      this.ctx.fillStyle = '#ffffff';
+
+      if (this.direction === 1) {
+        for (let i = 0; i < this.particlesLower.length; i++) {
+          const p = this.particlesLower[i];
+          const dx = p.vx * this.progress * 18 + (Math.random() - 0.5) * 2;
+          const dy = p.vy * this.progress * 14 + (Math.random() - 0.5) * 2;
+          const alpha = Math.max(0, p.alpha * (1 - this.progress));
+          this.ctx.globalAlpha = alpha;
+          this.ctx.beginPath();
+          this.ctx.arc(p.ox + dx, p.oy + dy, p.size * (1 - this.progress * 0.4), 0, Math.PI * 2);
+          this.ctx.fill();
+        }
+        for (let i = 0; i < this.particlesUpper.length; i++) {
+          const p = this.particlesUpper[i];
+          const dx = -p.vx * (1 - this.progress) * 16 + (Math.random() - 0.5) * 2;
+          const dy = -p.vy * (1 - this.progress) * 12 + (Math.random() - 0.5) * 2;
+          const alpha = Math.max(0, p.alpha * this.progress);
+          this.ctx.globalAlpha = alpha;
+          this.ctx.beginPath();
+          this.ctx.arc(p.ox + dx, p.oy + dy, p.size * (this.progress * 0.8 + 0.2), 0, Math.PI * 2);
+          this.ctx.fill();
+        }
+      } else {
+        for (let i = 0; i < this.particlesUpper.length; i++) {
+          const p = this.particlesUpper[i];
+          const dx = p.vx * this.progress * 18 + (Math.random() - 0.5) * 2;
+          const dy = p.vy * this.progress * 14 + (Math.random() - 0.5) * 2;
+          const alpha = Math.max(0, p.alpha * (1 - this.progress));
+          this.ctx.globalAlpha = alpha;
+          this.ctx.beginPath();
+          this.ctx.arc(p.ox + dx, p.oy + dy, p.size * (1 - this.progress * 0.4), 0, Math.PI * 2);
+          this.ctx.fill();
+        }
+        for (let i = 0; i < this.particlesLower.length; i++) {
+          const p = this.particlesLower[i];
+          const dx = -p.vx * (1 - this.progress) * 16 + (Math.random() - 0.5) * 2;
+          const dy = -p.vy * (1 - this.progress) * 12 + (Math.random() - 0.5) * 2;
+          const alpha = Math.max(0, p.alpha * this.progress);
+          this.ctx.globalAlpha = alpha;
+          this.ctx.beginPath();
+          this.ctx.arc(p.ox + dx, p.oy + dy, p.size * (this.progress * 0.8 + 0.2), 0, Math.PI * 2);
+          this.ctx.fill();
+        }
+      }
+
+      this.ctx.globalAlpha = 1;
+
+      if (t < 1) {
+        this.rafId = requestAnimationFrame((n) => this.animate(n));
+      } else {
+        this.animating = false;
+        this.rafId = null;
+      }
+    }
+  }
+
   if (prefersReduced || !("IntersectionObserver" in window)) {
     document.querySelectorAll(CHILD_SELECTOR).forEach((el) => {
       el.style.opacity = "1";
@@ -74,6 +270,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   checkVisibility();
   window.addEventListener("load", checkVisibility, { once: true });
+  new NikethDustDisintegration();
 
   /* =========================================================
      CINEMATIC AVENGERS: INFINITY WAR DUST DISINTEGRATION (AI)
@@ -493,12 +690,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Initialize on page
+  // Contact button dropdown logic
   new AiDustDisintegration();
+
+  // Contact dropdown toggle
+
 
   /* =========================================================
      LAB CATEGORY MICRO-INTERACTIONS
   ========================================================= */
   const labCategories = document.querySelectorAll('.lab-category');
+
 
   // Entrance animation with stagger
   if (labCategories.length > 0) {

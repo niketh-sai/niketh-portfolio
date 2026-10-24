@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
+  <title>404 — Page Not Found | Niketh Sai</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .error-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 40px 20px;
+      background: var(--bg-color);
+    }
+    .error-code {
+      font-size: clamp(6rem, 15vw, 12rem);
+      font-weight: 800;
+      letter-spacing: -4px;
+      color: var(--text-primary);
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+    .error-message {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      letter-spacing: 0.5px;
+    }
+    .error-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 32px;
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border-radius: 8px;
+      transition: all 280ms ease;
+    }
+    .error-link:hover {
+      border-color: var(--oneplus-red);
+      color: var(--oneplus-red);
+    }
+  </style>
+</head>
+<body>
+  <div class="error-page">
+    <div class="error-code">404</div>
+    <div class="error-message">Page not found</div>
+    <a href="index.html" class="error-link">
+      <span>BACK TO HOME</span>
+      <span>→</span>
+    </a>
+  </div>
+</body>
+</html>

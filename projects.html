@@ -3,11 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
+  <meta name="description" content="The Builds — Projects by Niketh Sai. Engineered systems, prototypes and experiments in AI, ML and Generative AI.">
+  <link rel="canonical" href="https://niketh-sai.github.io/projects.html">
+  <meta property="og:title" content="The Builds — Niketh Sai">
+  <meta property="og:description" content="Engineered systems, prototypes and experiments in AI, ML and Generative AI.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://niketh-sai.github.io/projects.html">
+  <meta name="twitter:card" content="summary">
   <title>The Builds — Niketh Sai</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script>
+    (function () {
+      let isReload = false;
+      if (window.performance) {
+        const navEntries = window.performance.getEntriesByType('navigation');
+        if (navEntries.length > 0 && navEntries[0].type === 'reload') {
+          isReload = true;
+        } else if (window.performance.navigation && window.performance.navigation.type === 1) {
+          isReload = true;
+        }
+      }
+      if (isReload) {
+        window.location.replace('index.html');
+      }
+    })();
+  </script>
 </head>
 <body class="projects-page">
 
@@ -26,15 +53,7 @@
     <div class="section-inner">
       <h2 class="section-title">THE BUILDS</h2>
       <p class="section-subtitle">ENGINEERED SYSTEMS &middot; PROTOTYPES &middot; EXPERIMENTS</p>
-
-      <!-- Filter Buttons -->
-      <div class="filter-container">
-        <button class="filter-btn active" data-filter="all">ALL</button>
-        <button class="filter-btn" data-filter="ai-ml">AI / ML</button>
-        <button class="filter-btn" data-filter="genai">GENAI</button>
-        <button class="filter-btn" data-filter="experiments">EXPERIMENTS</button>
-        <button class="filter-btn" data-filter="mini-builds">MINI BUILDS</button>
-      </div>
+      <p class="repo-notice">Note: Some project repositories may be private or unavailable for public access.</p>
 
       <!-- Projects Grid (Dynamic) -->
       <div class="projects-grid" id="projectsGrid">
@@ -57,7 +76,7 @@
     {
       name: "Hybrid Search Engine",
       description: "Combined keyword and semantic search system for improved document retrieval accuracy.",
-      tags: ["python", "elasticsearch", "sentence-transformers", "faiss"],
+      tags: ["Python", "FastAPI", "Streamlit", "Scikit-learn"],
       classification: "PROJECT",
       filters: ["ai-ml"],
       github: "https://github.com/niketh-sai/Hybrid-Search-Engine"
@@ -65,7 +84,7 @@
     {
       name: "ExAI",
       description: "Explainable AI framework providing interpretability and transparency for ML model decisions.",
-      tags: ["python", "xai", "shap", "lime", "sklearn"],
+      tags: ["Python", "Streamlit", "Scikit-learn", "Ollama"],
       classification: "PROJECT",
       filters: ["ai-ml"],
       github: "https://github.com/niketh-sai/ExAI"
@@ -73,7 +92,7 @@
     {
       name: "NeuralNews",
       description: "Automated news aggregation and classification system using neural networks.",
-      tags: ["python", "nlp", "transformers", "fastapi"],
+      tags: ["Python", "Streamlit", "Transformers", "SQLite"],
       classification: "PROJECT",
       filters: ["ai-ml"],
       github: "https://github.com/niketh-sai/NeuralNews"
@@ -81,7 +100,7 @@
     {
       name: "Cyberbullying Detection System",
       description: "ML-powered system detecting cyberbullying patterns in social media text data.",
-      tags: ["python", "nlp", "text-classification", "bert"],
+      tags: ["Python", "Streamlit", "NLP", "Scikit-learn"],
       classification: "PROJECT",
       filters: ["ai-ml"],
       github: "https://github.com/niketh-sai/Cyberbullying-Detection-System"
@@ -89,7 +108,7 @@
     {
       name: "Decision Tree",
       description: "Implementation of decision tree algorithm from scratch with visualization capabilities.",
-      tags: ["python", "machine-learning", "data-structures", "visualization"],
+      tags: ["Python", "Machine Learning", "Data Structures", "Visualization"],
       classification: "PROJECT",
       filters: ["ai-ml"],
       github: "https://github.com/niketh-sai/Decision-Tree"
@@ -97,7 +116,7 @@
     {
       name: "DocRAG",
       description: "Fully offline RAG system for querying local documents without third-party APIs.",
-      tags: ["rag", "faiss", "sentence-transformers", "ollama", "python"],
+      tags: ["Python", "FastAPI", "Ollama", "RAG", "HTML/CSS/JS"],
       classification: "PROJECT",
       filters: ["genai"],
       github: "https://github.com/niketh-sai/DocRAG"
@@ -105,96 +124,89 @@
     {
       name: "Tic-Tac-Toe",
       description: "Classic game implementation with minimax algorithm and AI opponent.",
-      tags: ["python", "game-ai", "minimax", "algorithms"],
+      tags: ["Python", "Streamlit"],
       classification: "MINI BUILD",
       filters: ["mini-builds"],
-      github: "https://github.com/niketh-sai/Tic-Tac-Toe"
+      github: "https://github.com/niketh-sai/TIC-TAC-TOE"
     },
     {
       name: "Rock Paper Scissors",
       description: "Interactive game with pattern recognition and adaptive AI strategies.",
-      tags: ["python", "game-ai", "pattern-recognition"],
+      tags: ["Python", "Streamlit", "Plotly"],
       classification: "MINI BUILD",
       filters: ["mini-builds"],
-      github: "https://github.com/niketh-sai/Rock-Paper-Scissors"
+      github: "https://github.com/niketh-sai/ROCK-PAPER-SCISSORS"
     },
     {
-      name: "QLoRA Fine-Tuning Tests",
+      name: "QLoRA Testing",
       description: "Experiments with QLoRA quantization for efficient LLM fine-tuning on consumer hardware.",
-      tags: ["python", "qlora", "fine-tuning", "llm", "pytorch"],
+      tags: ["Under Development"],
       classification: "EXPERIMENT",
       filters: ["experiments"],
-      github: null
+      github: "https://github.com/niketh-sai/QLoRA-Testing"
     }
   ];
 
   // Render Projects
-  function renderProjects(filter = 'all') {
+  function renderProjects() {
     const grid = document.getElementById('projectsGrid');
 
-    // Fade out existing cards
-    const existingCards = grid.querySelectorAll('.proj-card');
-    existingCards.forEach(card => {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(10px)';
-    });
+    grid.innerHTML = '';
 
-    // Wait for fade out, then render new cards
-    setTimeout(() => {
-      grid.innerHTML = '';
+    projectsData.forEach((project, index) => {
+      const card = document.createElement('article');
+      card.className = 'proj-card';
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
 
-      const filteredProjects = filter === 'all'
-        ? projectsData
-        : projectsData.filter(project => project.filters.includes(filter));
+      const header = document.createElement('div');
+      header.className = 'proj-header';
 
-      filteredProjects.forEach((project, index) => {
-        const card = document.createElement('article');
-        card.className = 'proj-card';
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(10px)';
+      const classification = document.createElement('span');
+      classification.className = 'proj-classification';
+      classification.textContent = project.classification;
 
-        const tagsHtml = project.tags.map(tag => `<span>${tag}</span>`).join('');
-        const githubLink = project.github
-          ? `<a href="${project.github}" target="_blank" rel="noopener noreferrer" class="proj-github-link">VIEW SOURCE <span class="link-arrow">↗</span></a>`
-          : '';
+      const titleRow = document.createElement('div');
+      titleRow.className = 'proj-title-row';
 
-        card.innerHTML = `
-          <div class="proj-header">
-            <span class="proj-classification">${project.classification}</span>
-            <h3 class="proj-title">${project.name}</h3>
-          </div>
-          <p class="proj-desc">${project.description}</p>
-          <div class="proj-stack">${tagsHtml}</div>
-          ${githubLink}
-        `;
+      const title = document.createElement('h3');
+      title.className = 'proj-title';
+      title.textContent = project.name;
 
-        grid.appendChild(card);
+      titleRow.appendChild(title);
 
-        // Staggered fade in
-        setTimeout(() => {
-          card.style.transition = 'opacity 300ms ease, transform 300ms ease';
-          card.style.opacity = '1';
-          card.style.transform = 'translateY(0)';
-        }, index * 50);
+      if (project.github) {
+        const githubLink = document.createElement('a');
+        githubLink.href = project.github;
+        githubLink.target = '_blank';
+        githubLink.rel = 'noopener noreferrer';
+        githubLink.className = 'proj-github-icon';
+        githubLink.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>';
+        titleRow.appendChild(githubLink);
+      }
+
+      header.appendChild(classification);
+      header.appendChild(titleRow);
+
+      const desc = document.createElement('p');
+      desc.className = 'proj-desc';
+      desc.textContent = project.description;
+
+      const stack = document.createElement('div');
+      stack.className = 'proj-stack';
+      project.tags.forEach(tag => {
+        const span = document.createElement('span');
+        span.textContent = tag;
+        stack.appendChild(span);
       });
-    }, 150);
-  }
 
-  // Filter Event Listeners
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      // Update active state
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      card.appendChild(header);
+      card.appendChild(desc);
+      card.appendChild(stack);
 
-      // Filter projects
-      const filter = btn.dataset.filter;
-      renderProjects(filter);
+      grid.appendChild(card);
     });
-  });
-
-  // Initial render
-  renderProjects();
+  }
 
   // Initial render
   renderProjects();

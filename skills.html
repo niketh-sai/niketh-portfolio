@@ -4,11 +4,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
   <title>Skills — Niketh Sai</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script>
+    (function () {
+      let isReload = false;
+      if (window.performance) {
+        const navEntries = window.performance.getEntriesByType('navigation');
+        if (navEntries.length > 0 && navEntries[0].type === 'reload') {
+          isReload = true;
+        } else if (window.performance.navigation && window.performance.navigation.type === 1) {
+          isReload = true;
+        }
+      }
+      if (isReload) {
+        window.location.replace('index.html');
+      }
+    })();
+  </script>
 </head>
 
 <body>

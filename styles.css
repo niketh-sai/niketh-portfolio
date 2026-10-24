@@ -53,6 +53,11 @@
   }
 }
 
+.contact-buttons-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -293,10 +298,29 @@ body {
   animation: heroFadeUp 0.9s var(--ease-out-expo) 0.35s forwards;
 }
 
+.first-name-wrap {
+  position: relative;
+  display: inline-block;
+}
+
 .hero-title .first-name {
   color: var(--text-primary);
   display: inline-block;
-  transition: transform 350ms var(--ease-out-expo), color 300ms ease;
+  position: relative;
+  z-index: 1;
+  font: inherit;
+  letter-spacing: inherit;
+}
+
+.first-name-canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 2;
+  width: 200%;
+  height: 200%;
 }
 
 .hero-title .last-name {
@@ -309,8 +333,6 @@ body {
 }
 
 .hero-title:hover .first-name {
-  transform: translateX(4px);
-  color: #FFFFFF;
 }
 
 .hero-title:hover .last-name {
@@ -506,11 +528,11 @@ body {
 .philosophy-inner {
   position: relative;
   width: 100%;
-  max-width: 920px;
+  max-width: 800px;
   background: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: 16px;
-  padding: 44px 52px;
+  padding: 32px 40px;
   transition: transform 320ms var(--ease-out-expo),
               border-color 300ms var(--ease-smooth),
               box-shadow 320ms var(--ease-out-expo),
@@ -672,8 +694,6 @@ body {
   height: 7px;
   background-color: var(--oneplus-red);
   border-radius: 50%;
-  box-shadow: 0 0 8px var(--oneplus-red);
-  animation: statusPulse 2s infinite ease-in-out;
   flex-shrink: 0;
 }
 
@@ -684,16 +704,6 @@ body {
 }
 
 @keyframes statusPulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-    box-shadow: 0 0 6px var(--oneplus-red);
-  }
-  50% {
-    transform: scale(1.3);
-    opacity: 0.45;
-    box-shadow: 0 0 12px var(--oneplus-red);
-  }
 }
 
 /* =========================================
@@ -744,7 +754,7 @@ body {
    EXPLORE ALL BUILDS SUBTLE LINK
 ========================================= */
 .explore-builds-wrapper {
-  margin-top: 40px;
+  margin-top: 20px;
   display: flex;
   justify-content: flex-start;
 }
@@ -780,17 +790,109 @@ body {
 }
 
 /* =========================================
+   CONNECT SECTION
+========================================= */
+.connect-section {
+  padding: 60px 12vw 80px;
+  display: flex;
+  justify-content: center;
+  background-color: var(--bg-color);
+}
+
+.connect-inner {
+  width: 100%;
+  max-width: 920px;
+  text-align: center;
+}
+
+.connect-inner .section-title {
+  margin-bottom: 60px;
+}
+
+.connect-inner .section-title::after {
+  background: #ff0033;
+}
+
+.connect-inner:hover .section-title::after {
+  background: #ff0033;
+  box-shadow: none;
+}
+
+.connect-icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 56px;
+}
+
+.connect-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #bfc0c2;
+  transition: color 250ms ease,
+              transform 250ms ease;
+}
+
+.connect-icon svg {
+  fill: currentColor;
+}
+
+.connect-icon:hover {
+  color: #ff0033;
+  transform: scale(1.08);
+}
+
+.connect-icon:active {
+  transform: scale(1.02);
+}
+
+@media (max-width: 768px) {
+  .connect-icons {
+    gap: 40px;
+  }
+
+  .connect-section {
+    padding: 48px 8vw 64px;
+  }
+}
+
+@media (max-width: 480px) {
+  .connect-icons {
+    gap: 32px;
+  }
+
+  .connect-inner .section-title {
+    margin-bottom: 48px;
+  }
+}
+
+/* =========================================
    WHAT I BRING & WHERE I'M HEADED
 ========================================= */
 .what-i-bring-section {
-  padding: 80px 12vw 80px;
+  padding: 34px 12vw 48px;
+  min-height: auto;
   display: flex;
+  align-items: flex-start;
   justify-content: center;
+}
+
+.what-i-bring-section .section-inner {
+  width: 100%;
+  max-width: 800px;
+}
+
+.what-i-bring-section .section-title {
+  margin-bottom: 40px;
+}
+
+.what-i-bring-section .section-title::after {
+  width: 48px;
 }
 
 .what-i-bring-inner {
   width: 100%;
-  max-width: 920px;
   background: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: 16px;
@@ -825,19 +927,6 @@ body {
 
 .what-i-bring-inner:hover::before {
   opacity: 1;
-}
-
-.principles-header {
-  margin-bottom: 36px;
-}
-
-.principles-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: var(--text-primary);
-  margin: 0;
-  text-transform: uppercase;
 }
 
 .principles-grid {
@@ -955,8 +1044,6 @@ body {
   height: 8px;
   background-color: var(--oneplus-red);
   border-radius: 50%;
-  box-shadow: 0 0 8px var(--oneplus-red);
-  animation: statusPulse 2s infinite ease-in-out;
   flex-shrink: 0;
 }
 
@@ -1049,50 +1136,10 @@ body {
 }
 
 /* =========================================
-   HERO SOCIAL ICONS
-========================================= */
-.hero-social-icons {
-  display: flex;
-  gap: 28px;
-  margin-top: 24px;
-  align-items: center;
-}
-
-.hero-social-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  color: var(--primary-silver);
-  transition: color 250ms ease-in-out,
-              transform 250ms ease-in-out;
-  border-radius: 6px;
-}
-
-.hero-social-icon:hover {
-  color: var(--oneplus-red);
-  transform: translateY(-2px);
-}
-
-.hero-social-icon:focus {
-  outline: none;
-}
-
-.hero-social-icon:focus-visible {
-  outline: 1px solid var(--text-muted);
-  outline-offset: 2px;
-}
-
-.hero-social-icon:active {
-  color: var(--oneplus-red);
-}
-
-/* =========================================
    OTHER SECTIONS & CARDS
 ========================================= */
 .content-section {
-  padding: 150px 12vw 60px;
+  padding: 66px 12vw 60px;
   min-height: 100vh;
   display: flex;
   align-items: flex-start;
@@ -1159,7 +1206,7 @@ body {
   left: 0;
   width: 24px;
   height: 2px;
-  background: var(--accent-color);
+  background: #ff0033;
   border-radius: 2px;
   transition: width 350ms var(--ease-out-expo), background-color 300ms ease, box-shadow 300ms ease;
 }
@@ -1167,8 +1214,12 @@ body {
 .content-section.is-visible .section-title::after,
 .section-inner:hover .section-title::after {
   width: 48px;
-  background: var(--oneplus-red);
-  box-shadow: 0 0 8px var(--oneplus-red-glow);
+  background: #ff0033;
+  box-shadow: none;
+}
+
+.what-i-bring-section > .section-title::after {
+  width: 48px;
 }
 
 .section-subtitle {
@@ -1177,8 +1228,15 @@ body {
   letter-spacing: 2px;
   text-transform: uppercase;
   margin-top: -24px;
-  margin-bottom: 35px;
+  margin-bottom: 16px;
   font-weight: 500;
+}
+
+.repo-notice {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  margin-bottom: 35px;
+  font-weight: 400;
 }
 
 .category-header {
@@ -1305,6 +1363,29 @@ body {
   margin-bottom: 0;
   color: var(--text-primary);
   transition: color 280ms ease, transform 280ms var(--ease-out-expo);
+}
+
+.proj-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.proj-github-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: color 250ms ease;
+  line-height: 1;
+}
+
+.proj-github-icon:hover {
+  color: #ff0033;
+}
+
+.proj-github-icon svg {
+  display: block;
 }
 
 .proj-card:hover .proj-num {
@@ -1901,6 +1982,12 @@ body {
   line-height: 1;
 }
 
+.lab-heading-icon {
+  color: var(--primary-silver);
+  flex-shrink: 0;
+  display: block;
+}
+
 .lab-section-title {
   font-size: 1.1rem;
   font-weight: 700;
@@ -1912,7 +1999,7 @@ body {
 
 .lab-category-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
 
@@ -1923,6 +2010,8 @@ body {
   padding: 24px;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
   opacity: 0;
   transform: translateY(12px);
   transition: transform 250ms var(--ease-smooth),
@@ -2195,7 +2284,41 @@ body {
   }
 
   .content-section {
-    padding: 100px 6vw 60px;
+    padding: 44px 6vw 60px;
+  }
+
+  .what-i-bring-section {
+    padding: 35px 6vw 48px;
+  }
+
+  .what-i-bring-inner {
+    padding: 32px 24px;
+  }
+
+  .principles-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .principle-number {
+    font-size: 2rem;
+  }
+
+  .principle-card {
+    padding: 20px 18px;
+  }
+
+  .roles-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .role-badge {
+    justify-content: center;
+  }
+
+  .personal-details-strip {
+    gap: 8px;
   }
 
   .proj-card {
@@ -2245,21 +2368,9 @@ body {
     max-width: 100%;
   }
 
-  .what-i-bring-section {
-    padding: 50px 6vw 50px;
-  }
-
-  .what-i-bring-inner {
-    padding: 32px 24px;
-  }
-
   .principles-grid {
     grid-template-columns: 1fr;
     gap: 20px;
-  }
-
-  .principles-title {
-    font-size: 1rem;
   }
 
   .principle-number {
@@ -2335,6 +2446,18 @@ body {
 @media (max-width: 480px) {
   .skills-grid {
     grid-template-columns: 1fr;
+  }
+
+  .lab-category-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .content-section {
+    padding: 36px 6vw 60px;
+  }
+
+  .what-i-bring-section {
+    padding: 28px 6vw 45px;
   }
 }
 

@@ -4,6 +4,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
+  <meta name="description" content="Niketh Sai — Data Scientist & AI Engineer. Building end-to-end ML systems, Generative AI applications, and privacy-first NLP pipelines.">
+  <meta name="keywords" content="Niketh Sai, Data Scientist, AI Engineer, Machine Learning, Generative AI, NLP, Portfolio">
+  <link rel="canonical" href="https://niketh-sai.github.io/">
+  <meta property="og:title" content="Niketh Sai — Data Scientist & AI Engineer">
+  <meta property="og:description" content="Building end-to-end ML systems, Generative AI applications, and privacy-first NLP pipelines.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://niketh-sai.github.io/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Niketh Sai — Data Scientist & AI Engineer">
+  <meta name="twitter:description" content="Building end-to-end ML systems, Generative AI applications, and privacy-first NLP pipelines.">
   <title>Niketh Sai — Data Scientist &middot; AI Engineer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,10 +38,24 @@
         isReload = true;
       }
     }
+
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+
+    if (isReload) {
+      if (window.location.hash || window.location.search) {
+        history.replaceState(null, '', window.location.pathname);
+      }
+      window.scrollTo(0, 0);
+    }
+
     const isFirstVisit = !sessionStorage.getItem('preloaderShown');
 
     if (!isFirstVisit && !isReload) {
-      document.write('<style>#preloader { display: none !important; }</style>');
+      const style = document.createElement('style');
+      style.textContent = '#preloader { display: none !important; }';
+      document.head.appendChild(style);
     } else {
       sessionStorage.setItem('preloaderShown', 'true');
     }
@@ -61,7 +89,10 @@
     <section class="hero-container" id="top">
       <div class="hero-content">
         <h1 class="hero-title">
-          <span class="first-name">Niketh</span><br>
+          <span class="first-name-wrap">
+            <span class="first-name" id="heroFirstName" aria-label="Niketh">Niketh</span>
+            <canvas class="first-name-canvas" id="firstNameCanvas"></canvas>
+          </span><br>
           <span class="last-name" id="heroLastName" aria-label="Sai"><span class="letter-s" aria-hidden="true">S</span><span class="ai-wrap" id="aiWrap" aria-hidden="true"><span class="ai-text ai-lower" id="aiLower">ai</span><span class="ai-text ai-upper" id="aiUpper">AI</span><canvas class="ai-dust-canvas" id="aiCanvas"></canvas></span></span>
         </h1>
         <div class="hero-description">
@@ -73,40 +104,12 @@
           </p>
         </div>
         <div class="contact-buttons-wrapper">
-          <a href="mailto:nikethsai.p@gmail.com" class="pill-btn pill-btn-primary" style="text-decoration: none;">
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=niketh27.p@gmail.com" target="_blank" rel="noopener noreferrer" class="pill-btn pill-btn-primary" id="contactBtn" style="text-decoration: none;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
               <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
             </svg>
-            <span>EMAIL</span>
-          </a>
-          <a href="https://outlook.live.com/owa/?path=/mail/action/compose&to=nikethsai.p@outlook.com" target="_blank" rel="noopener noreferrer" class="pill-btn pill-btn-secondary" style="text-decoration: none;">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
-              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-            </svg>
-            <span>OUTLOOK</span>
-          </a>
-        </div>
-        <div class="hero-social-icons">
-          <a href="https://www.linkedin.com/in/niketh-sai-parimikayala" target="_blank" rel="noopener noreferrer" class="hero-social-icon" aria-label="LinkedIn Profile">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-            </svg>
-          </a>
-          <a href="https://github.com/niketh-sai" target="_blank" rel="noopener noreferrer" class="hero-social-icon" aria-label="GitHub Profile">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-            </svg>
-          </a>
-          <a href="https://leetcode.com/u/Niketh_Sai/" target="_blank" rel="noopener noreferrer" class="hero-social-icon" aria-label="LeetCode Profile">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.42a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/>
-            </svg>
-          </a>
-          <a href="https://www.hackerrank.com/profile/nikethsai_p" target="_blank" rel="noopener noreferrer" class="hero-social-icon" aria-label="HackerRank Profile">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M9.95 8.002h1.805c.061 0 .111.05.111.111v7.767c0 .061-.05.111-.11.111H9.95a.11.11 0 0 1-.111-.11v-2.87H7.894v2.87c0 .06-.05.11-.11.11H5.976a.11.11 0 0 1-.11-.11V8.112c0-.06.05-.11.11-.11h1.806c.061 0 .11.05.11.11v2.869H9.84v-2.87c0-.06.05-.11.11-.11zm2.999 0h5.778c.061 0 .111.05.111.11v7.767a.11.11 0 0 1-.11.112h-5.78a.11.11 0 0 1-.11-.11v-7.77c0-.06.05-.11.11-.11z"/>
-            </svg>
-          </a>
+            <span>CONTACT</span></a>
+
         </div>
       </div>
     </section>
@@ -132,10 +135,6 @@
               Artificial Intelligence and Machine Learning. I enjoy turning complex ideas
               into practical, reliable software systems.
             </p>
-            <div class="status-indicator">
-              <span class="status-dot"></span>
-              OPEN TO OPPORTUNITIES
-            </div>
             <div class="personal-details-strip">
               <span class="detail-badge">Hyderabad, India</span>
               <span class="detail-badge">B.Tech CSE — AI &amp; ML</span>
@@ -150,13 +149,20 @@
 
     <section id="projects" class="content-section">
       <div class="section-inner">
-        <h2 class="section-title">THE BUILDS</h2>
+        <h2 class="section-title">FEATURED BUILDS</h2>
         <div class="projects-grid">
           <article class="proj-card">
             <div class="proj-header">
               <span class="proj-num">01</span>
               <span class="proj-dash">—</span>
-              <h3 class="proj-title">Cognivis</h3>
+              <div class="proj-title-row">
+                <h3 class="proj-title">Cognivis</h3>
+                <a href="https://github.com/niketh-sai/Cognivis" target="_blank" rel="noopener noreferrer" class="proj-github-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                  </svg>
+                </a>
+              </div>
             </div>
             <p class="proj-tag">Explainable AI platform</p>
             <p class="proj-desc">
@@ -164,7 +170,7 @@
               self-consistency checks, and calibrated confidence on every answer.
             </p>
             <div class="proj-stack">
-              <span>xai</span><span>fastapi</span><span>react</span>
+              <span>Python</span><span>Ollama</span><span>FastAPI</span><span>RAG</span><span>React</span>
             </div>
           </article>
 
@@ -172,7 +178,14 @@
             <div class="proj-header">
               <span class="proj-num">02</span>
               <span class="proj-dash">—</span>
-              <h3 class="proj-title">MedIntel</h3>
+              <div class="proj-title-row">
+                <h3 class="proj-title">MedIntel</h3>
+                <a href="https://github.com/niketh-sai/MedIntel" target="_blank" rel="noopener noreferrer" class="proj-github-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                  </svg>
+                </a>
+              </div>
             </div>
             <p class="proj-tag">AI healthcare assistant</p>
             <p class="proj-desc">
@@ -181,7 +194,7 @@
               retrieved documents rather than model guesswork.
             </p>
             <div class="proj-stack">
-              <span>fastapi</span><span>react</span><span>rag</span><span>faiss</span><span>biobert</span><span>trocr</span>
+              <span>Python</span><span>Ollama</span><span>FastAPI</span><span>LangChain</span><span>RAG</span><span>React</span>
             </div>
           </article>
 
@@ -189,7 +202,14 @@
             <div class="proj-header">
               <span class="proj-num">03</span>
               <span class="proj-dash">—</span>
-              <h3 class="proj-title">SQL Co-Pilot</h3>
+              <div class="proj-title-row">
+                <h3 class="proj-title">SQL Co-Pilot</h3>
+                <a href="https://github.com/niketh-sai/SQL-Co-Pilot" target="_blank" rel="noopener noreferrer" class="proj-github-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                  </svg>
+                </a>
+              </div>
             </div>
             <p class="proj-tag">Natural language to SQL, fully offline</p>
             <p class="proj-desc">
@@ -198,7 +218,7 @@
               required.
             </p>
             <div class="proj-stack">
-              <span>ollama</span><span>local-llm</span><span>python</span>
+              <span>Python</span><span>Ollama</span><span>FastAPI</span><span>SQLite</span><span>Streamlit</span>
             </div>
           </article>
         </div>
@@ -213,11 +233,10 @@
 
     <!-- What I Bring & Where I'm Headed -->
     <section class="what-i-bring-section">
-      <div class="what-i-bring-inner">
-        <div class="principles-header">
-          <h2 class="principles-title">WHAT I BRING</h2>
-        </div>
-        <div class="principles-grid">
+      <div class="section-inner">
+        <h2 class="section-title">WHAT I BRING</h2>
+        <div class="what-i-bring-inner">
+          <div class="principles-grid">
           <div class="principle-card">
             <span class="principle-number">01</span>
             <h3 class="principle-heading">SYSTEMS THINKING</h3>
@@ -265,10 +284,67 @@
           </p>
         </div>
       </div>
+      </div>
+    </section>
+
+    <!-- Connect Section -->
+    <section class="connect-section" id="connect">
+      <div class="connect-inner">
+        <h2 class="section-title">PROFILES</h2>
+        <div class="connect-icons">
+          <a href="https://www.linkedin.com/in/niketh-sai-parimikayala" target="_blank" rel="noopener noreferrer" class="connect-icon" aria-label="LinkedIn Profile" data-tooltip="LinkedIn" title="LinkedIn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+          <a href="https://github.com/niketh-sai" target="_blank" rel="noopener noreferrer" class="connect-icon" aria-label="GitHub Profile" data-tooltip="GitHub" title="GitHub">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </a>
+          <a href="https://leetcode.com/u/Niketh_Sai/" target="_blank" rel="noopener noreferrer" class="connect-icon" aria-label="LeetCode Profile" data-tooltip="LeetCode" title="LeetCode">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.42a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/>
+            </svg>
+          </a>
+          <a href="https://www.hackerrank.com/profile/nikethsai_p" target="_blank" rel="noopener noreferrer" class="connect-icon" aria-label="HackerRank Profile" data-tooltip="HackerRank" title="HackerRank">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0c1.025 0 9.428 4.728 10.453 5.754s1.025 11.473 0 12.498S13.025 24 12 24s-9.428-4.728-10.453-5.748c-1.025-1.025-1.025-11.479 0-12.504C2.572 4.723 10.975 0 12 0zm-1.29 17.07h1.394v-2.711h1.978c.204 0 .38-.012.527-.036l1.63 2.747h1.588l-1.856-3.063c1.014-.557 1.521-1.449 1.521-2.674 0-1.877-1.263-3.076-3.301-3.076H10.71v8.813zm1.394-3.885v-3.752h1.67c1.263 0 1.97.618 1.97 1.856 0 1.25-.707 1.896-1.97 1.896h-1.67z"/>
+            </svg>
+          </a>
+          <a href="https://www.kaggle.com/nikethp" target="_blank" rel="noopener noreferrer" class="connect-icon" aria-label="Kaggle Profile" data-tooltip="Kaggle" title="Kaggle">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.825 23.859c-.022.092-.117.141-.281.141h-3.139c-.187 0-.351-.082-.492-.248l-5.178-6.589-1.448 1.374v5.111c0 .235-.117.352-.351.352H5.505c-.236 0-.354-.117-.354-.352V.353c0-.233.118-.353.354-.353h2.431c.234 0 .351.12.351.353v14.12l5.014-4.851c.164-.165.328-.247.493-.247h3.139c.164 0 .258.05.281.141.023.091-.012.21-.105.356l-4.725 4.59 5.097 6.425c.093.146.128.265.105.356z"/>
+            </svg>
+          </a>
+          <a href="https://huggingface.co/niketh-sai" target="_blank" rel="noopener noreferrer" class="connect-icon" aria-label="Hugging Face Profile" data-tooltip="Hugging Face" title="Hugging Face">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12.025 1.13c-5.77 0-10.449 4.647-10.449 10.378 0 1.112.178 2.181.503 3.185.064-.222.203-.444.416-.577a.96.96 0 0 1 .524-.15c.293 0 .584.124.84.284.278.173.48.408.71.694.226.282.458.611.684.951v-.014c.017-.324.106-.622.264-.874s.403-.487.762-.543c.3-.047.596.06.787.203s.31.313.4.467c.15.257.212.468.233.542.01.026.653 1.552 1.657 2.54.616.605 1.01 1.223 1.082 1.912.055.537-.096 1.059-.38 1.572.637.121 1.294.187 1.967.187.657 0 1.298-.063 1.921-.178-.287-.517-.44-1.041-.384-1.581.07-.69.465-1.307 1.081-1.913 1.004-.987 1.647-2.513 1.657-2.539.021-.074.083-.285.233-.542.09-.154.208-.323.4-.467a1.08 1.08 0 0 1 .787-.203c.359.056.604.29.762.543s.247.55.265.874v.015c.225-.34.457-.67.683-.952.23-.286.432-.52.71-.694.257-.16.547-.284.84-.285a.97.97 0 0 1 .524.151c.228.143.373.388.43.625l.006.04a10.3 10.3 0 0 0 .534-3.273c0-5.731-4.678-10.378-10.449-10.378M8.327 6.583a1.5 1.5 0 0 1 .713.174 1.487 1.487 0 0 1 .617 2.013c-.183.343-.762-.214-1.102-.094-.38.134-.532.914-.917.71a1.487 1.487 0 0 1 .69-2.803m7.486 0a1.487 1.487 0 0 1 .689 2.803c-.385.204-.536-.576-.916-.71-.34-.12-.92.437-1.103.094a1.487 1.487 0 0 1 .617-2.013 1.5 1.5 0 0 1 .713-.174m-10.68 1.55a.96.96 0 1 1 0 1.921.96.96 0 0 1 0-1.92m13.838 0a.96.96 0 1 1 0 1.92.96.96 0 0 1 0-1.92M8.489 11.458c.588.01 1.965 1.157 3.572 1.164 1.607-.007 2.984-1.155 3.572-1.164.196-.003.305.12.305.454 0 .886-.424 2.328-1.563 3.202-.22-.756-1.396-1.366-1.63-1.32q-.011.001-.02.006l-.044.026-.01.008-.03.024q-.018.017-.035.036l-.032.04a1 1 0 0 0-.058.09l-.014.025q-.049.088-.11.19a1 1 0 0 1-.083.116 1.2 1.2 0 0 1-.173.18q-.035.029-.075.058a1.3 1.3 0 0 1-.251-.243 1 1 0 0 1-.076-.107c-.124-.193-.177-.363-.337-.444-.034-.016-.104-.008-.2.022q-.094.03-.216.087-.06.028-.125.063l-.13.074q-.067.04-.136.086a3 3 0 0 0-.135.096 3 3 0 0 0-.26.219 2 2 0 0 0-.12.121 2 2 0 0 0-.106.128l-.002.002a2 2 0 0 0-.09.132l-.001.001a1.2 1.2 0 0 0-.105.212q-.013.036-.024.073c-1.139-.875-1.563-2.317-1.563-3.203 0-.334.109-.457.305-.454m.836 10.354c.824-1.19.766-2.082-.365-3.194-1.13-1.112-1.789-2.738-1.789-2.738s-.246-.945-.806-.858-.97 1.499.202 2.362c1.173.864-.233 1.45-.685.64-.45-.812-1.683-2.896-2.322-3.295s-1.089-.175-.938.647 2.822 2.813 2.562 3.244-1.176-.506-1.176-.506-2.866-2.567-3.49-1.898.473 1.23 2.037 2.16c1.564.932 1.686 1.178 1.464 1.53s-3.675-2.511-4-1.297c-.323 1.214 3.524 1.567 3.287 2.405-.238.839-2.71-1.587-3.216-.642-.506.946 3.49 2.056 3.522 2.064 1.29.33 4.568 1.028 5.713-.624m5.349 0c-.824-1.19-.766-2.082.365-3.194 1.13-1.112 1.789-2.738 1.789-2.738s.246-.945.806-.858.97 1.499-.202 2.362c-1.173.864.233 1.45.685.64.451-.812 1.683-2.896 2.322-3.295s1.089-.175.938.647-2.822 2.813-2.562 3.244 1.176-.506 1.176-.506 2.866-2.567 3.49-1.898-.473 1.23-2.037 2.16c-1.564.932-1.686 1.178-1.464 1.53s3.675-2.511 4-1.297c.323 1.214-3.524 1.567-3.287 2.405.238.839 2.71-1.587 3.216-.642.506.946-3.49 2.056-3.522 2.064-1.29.33-4.568 1.028-5.713-.624"/>
+            </svg>
+          </a>
+        </div>
+      </div>
     </section>
   </main>
 
   <script src="script.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Niketh Sai",
+    "jobTitle": "Data Scientist & AI Engineer",
+    "url": "https://niketh-sai.github.io/",
+    "sameAs": [
+      "https://www.linkedin.com/in/niketh-sai/",
+      "https://github.com/niketh-sai",
+      "https://leetcode.com/u/niketh27/",
+      "https://www.hackerrank.com/profile/niketh27_p",
+      "https://www.kaggle.com/nikethsai",
+      "https://huggingface.co/niketh-sai"
+    ]
+  }
+  </script>
 </body>
 
 </html>
