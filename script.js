@@ -270,7 +270,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   checkVisibility();
   window.addEventListener("load", checkVisibility, { once: true });
-  new NikethDustDisintegration();
+  try {
+    new NikethDustDisintegration();
+  } catch (e) {
+    // fail silently
+  }
 
   /* =========================================================
      CINEMATIC AVENGERS: INFINITY WAR DUST DISINTEGRATION (AI)

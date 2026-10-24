@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://niketh-sai.github.io/sitemap.xml
+Sitemap: https://niketh-portfolio-jsah.vercel.app/sitemap.xml
