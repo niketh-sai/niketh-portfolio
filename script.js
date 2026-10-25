@@ -729,5 +729,239 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   }
-});
 
+  /* =========================================================
+     FEATURE 1: SMART AUTO-HIDING NAVIGATION (MOBILE)
+  ========================================================= */
+  (function initAutoHidingNavbar() {
+    const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+
+    let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollThreshold = 10;
+    const topOffsetThreshold = 50;
+    let ticking = false;
+
+    function isMobileView() {
+      return window.innerWidth <= 768;
+    }
+
+    function isMobileMenuOpen() {
+      const activeMenu = document.querySelector('.mobile-menu.open, .nav-links.open, .nav-menu.open, [aria-expanded="true"].mobile-toggle');
+      return Boolean(activeMenu);
+    }
+
+    function updateNavVisibility() {
+      const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+      // On desktop or when mobile menu is open, ensure navbar is visible
+      if (!isMobileView() || isMobileMenuOpen()) {
+        navbar.classList.remove('nav-hidden');
+        lastScrollY = currentScrollY;
+        ticking = false;
+        return;
+      }
+
+      // Always show when near or at the top of page
+      if (currentScrollY <= topOffsetThreshold) {
+        navbar.classList.remove('nav-hidden');
+        lastScrollY = currentScrollY;
+        ticking = false;
+        return;
+      }
+
+      const diff = currentScrollY - lastScrollY;
+
+      // Only trigger if scroll delta exceeds threshold
+      if (Math.abs(diff) >= scrollThreshold) {
+        if (diff > 0) {
+          // Scrolling down: hide
+          navbar.classList.add('nav-hidden');
+        } else {
+          // Scrolling up: reveal
+          navbar.classList.remove('nav-hidden');
+        }
+        lastScrollY = currentScrollY;
+      }
+
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateNavVisibility);
+        ticking = true;
+      }
+    }, { passive: true });
+
+    window.addEventListener('resize', () => {
+      if (!isMobileView()) {
+        navbar.classList.remove('nav-hidden');
+      }
+    }, { passive: true });
+  })();
+
+  /* =========================================================
+     FEATURE 2: MOBILE SWIPE NAVIGATION
+     Order: INTRO -> THE BUILDS -> JOURNEY -> THE LAB
+  ========================================================= */
+  (function initMobileSwipeNavigation() {
+    const SECTIONS = [
+      { name: 'INTRO', url: 'index.html' },
+      { name: 'THE BUILDS', url: 'projects.html' },
+      { name: 'JOURNEY', url: 'experience.html' },
+      { name: 'THE LAB', url: 'education.html' }
+    ];
+
+    function getCurrentSectionIndex() {
+      const pathname = window.location.pathname.toLowerCase();
+      const filename = pathname.substring(pathname.lastIndexOf('/') + 1) || 'index.html';
+
+      if (filename === '' || filename === 'index.html') return 0;
+      if (filename.includes('project')) return 1;
+      if (filename.includes('experience')) return 2;
+      if (filename.includes('education') || filename.includes('lab')) return 3;
+
+      // Fallback: check active nav link
+      const activeLink = document.querySelector('.nav-links a.active');
+      if (activeLink) {
+        const href = (activeLink.getAttribute('href') || '').toLowerCase();
+        for (let i = 0; i < SECTIONS.length; i++) {
+          if (href.includes(SECTIONS[i].url)) return i;
+        }
+      }
+
+      return -1;
+    }
+
+    const currentIndex = getCurrentSectionIndex();
+    if (currentIndex === -1) return;
+
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartTime = 0;
+    let isTrackingGesture = false;
+    let isNavigating = false;
+
+    const SWIPE_THRESHOLD = 75;
+    const MAX_VERTICAL_RATIO = 0.75;
+    const MAX_DURATION_MS = 650;
+
+    const interactiveSelector = [
+      'a', 'button', 'input', 'textarea', 'select', 'canvas',
+      '.filter-container', '.filter-btn', '.nav-links',
+      '.proj-github-icon', '.pill-btn', '.connect-icon',
+      '[role="button"]', '[data-no-swipe]', '.cert-viewer',
+      '.certificate-container', '.modal', '.dialog'
+    ].join(', ');
+
+    function isTouchOrMobileDevice() {
+      const hasTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+      const isMobileWidth = window.innerWidth <= 768;
+      return hasTouch && isMobileWidth;
+    }
+
+    function isInteractive(target) {
+      if (!target || !(target instanceof Element)) return false;
+      if (target.closest(interactiveSelector)) return true;
+
+      // Check if target or any ancestor is horizontally scrollable
+      let el = target;
+      while (el && el !== document.body && el !== document.documentElement) {
+        if (el.scrollWidth > el.clientWidth + 5) {
+          const style = window.getComputedStyle(el);
+          const overflowX = style.overflowX;
+          if (overflowX === 'auto' || overflowX === 'scroll') {
+            return true;
+          }
+        }
+        el = el.parentElement;
+      }
+
+      return false;
+    }
+
+    window.addEventListener('touchstart', (e) => {
+      if (!isTouchOrMobileDevice() || isNavigating) {
+        isTrackingGesture = false;
+        return;
+      }
+
+      if (e.touches.length !== 1) {
+        isTrackingGesture = false;
+        return;
+      }
+
+      const touch = e.touches[0];
+      if (isInteractive(e.target)) {
+        isTrackingGesture = false;
+        return;
+      }
+
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+      touchStartTime = Date.now();
+      isTrackingGesture = true;
+    }, { passive: true });
+
+    window.addEventListener('touchend', (e) => {
+      if (!isTrackingGesture || isNavigating) return;
+      isTrackingGesture = false;
+
+      if (!e.changedTouches || e.changedTouches.length === 0) return;
+
+      const touch = e.changedTouches[0];
+      const deltaX = touch.clientX - touchStartX;
+      const deltaY = touch.clientY - touchStartY;
+      const duration = Date.now() - touchStartTime;
+
+      const absX = Math.abs(deltaX);
+      const absY = Math.abs(deltaY);
+
+      // Must exceed swipe threshold and finish within gesture duration
+      if (absX < SWIPE_THRESHOLD || duration > MAX_DURATION_MS) {
+        return;
+      }
+
+      // Distinguish horizontal gesture from vertical scrolling:
+      // Vertical movement must not dominate horizontal movement
+      if (absY > absX * MAX_VERTICAL_RATIO) {
+        return;
+      }
+
+      let targetIndex = -1;
+
+      if (deltaX < 0) {
+        // Swipe left -> Next section
+        if (currentIndex < SECTIONS.length - 1) {
+          targetIndex = currentIndex + 1;
+        }
+      } else {
+        // Swipe right -> Previous section
+        if (currentIndex > 0) {
+          targetIndex = currentIndex - 1;
+        }
+      }
+
+      if (targetIndex !== -1 && targetIndex !== currentIndex) {
+        isNavigating = true;
+        const targetUrl = SECTIONS[targetIndex].url;
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (prefersReducedMotion) {
+          window.location.href = targetUrl;
+        } else {
+          document.body.classList.add('portfolio-page-transitioning');
+          setTimeout(() => {
+            window.location.href = targetUrl;
+          }, 80);
+        }
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchcancel', () => {
+      isTrackingGesture = false;
+    }, { passive: true });
+  })();
+});

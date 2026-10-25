@@ -176,7 +176,17 @@ body {
   top: 30px;
   left: 0;
   width: 100%;
-  z-index: 100;
+  z-index: 1000;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    transition: transform 220ms cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
+  }
+  .navbar.nav-hidden {
+    transform: translateY(-120%);
+  }
 }
 
 .logo {
@@ -2206,6 +2216,12 @@ body {
    REDUCED MOTION SUPPORT (ACCESSIBILITY)
 ========================================= */
 @media (prefers-reduced-motion: reduce) {
+  .navbar {
+    transition: none !important;
+  }
+  .portfolio-page-transitioning {
+    transition: none !important;
+  }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
@@ -2235,6 +2251,12 @@ body {
   .ai-dust-canvas {
     display: none !important;
   }
+}
+
+/* Mobile swipe page transition */
+.portfolio-page-transitioning {
+  opacity: 0.85;
+  transition: opacity 150ms ease;
 }
 
 /* =========================================
