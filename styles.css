@@ -2321,51 +2321,6 @@ body {
 }
 
 /* =========================================
-   MOBILE SECTION PROGRESS INDICATOR
-   Subtle 4-segment indicator for mobile navigation
-========================================= */
-.section-progress-indicator {
-  display: none;
-}
-
-@media (max-width: 768px) {
-  .section-progress-indicator {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    position: fixed;
-    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 999;
-    background: rgba(18, 18, 18, 0.7);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 6px 14px;
-    border-radius: 20px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-    pointer-events: none;
-    transition: opacity 220ms ease, transform 220ms ease;
-  }
-
-  .progress-segment {
-    width: 18px;
-    height: 3px;
-    border-radius: 2px;
-    background: rgba(224, 224, 224, 0.28);
-    transition: background-color 260ms ease, width 260ms ease, box-shadow 260ms ease;
-  }
-
-  .progress-segment.active {
-    width: 28px;
-    background: var(--oneplus-red);
-    box-shadow: 0 0 8px var(--oneplus-red-glow);
-  }
-}
-
-/* =========================================
    RESPONSIVENESS
 ========================================= */
 @media (max-width: 768px) {
@@ -2395,7 +2350,7 @@ body {
   }
 
   .hero-container {
-    padding: 100px 6vw 60px;
+    padding: calc(100px + env(safe-area-inset-top, 0px)) 6vw 60px;
     min-height: auto;
   }
 
@@ -2422,6 +2377,12 @@ body {
 
   .content-section {
     padding: 44px 6vw 60px;
+  }
+
+  /* Clear the fixed floating nav only on the first section of each page.
+     Nav bottom edge = 12px top offset + safe-area + ~56px pill height. */
+  main > .content-section:first-child {
+    padding-top: calc(88px + env(safe-area-inset-top, 0px));
   }
 
   .what-i-bring-section {

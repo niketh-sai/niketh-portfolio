@@ -919,15 +919,6 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         });
 
-        const progressSegments = document.querySelectorAll('.progress-segment');
-        progressSegments.forEach((seg, idx) => {
-          if (idx === targetIndex) {
-            seg.classList.add('active');
-          } else {
-            seg.classList.remove('active');
-          }
-        });
-
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         if (prefersReducedMotion) {
@@ -956,48 +947,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }, { passive: true });
   })();
 
-  /* =========================================================
-     FEATURE 9: SECTION PROGRESS INDICATOR (MOBILE)
-     Subtle 4-segment indicator: INTRO -> THE BUILDS -> JOURNEY -> THE LAB
-  ========================================================= */
-  (function initSectionProgressIndicator() {
-    // Only initialize on mobile touch views
-    if (window.innerWidth > 768) return;
-
-    const SECTIONS = ['index.html', 'projects.html', 'experience.html', 'education.html'];
-
-    function getActiveIndex() {
-      const pathname = window.location.pathname.toLowerCase();
-      const filename = pathname.substring(pathname.lastIndexOf('/') + 1) || 'index.html';
-
-      if (filename === '' || filename === 'index.html') return 0;
-      if (filename.includes('project')) return 1;
-      if (filename.includes('experience')) return 2;
-      if (filename.includes('education') || filename.includes('lab')) return 3;
-
-      const activeLink = document.querySelector('.nav-links a.active');
-      if (activeLink) {
-        const href = (activeLink.getAttribute('href') || '').toLowerCase();
-        for (let i = 0; i < SECTIONS.length; i++) {
-          if (href.includes(SECTIONS[i])) return i;
-        }
-      }
-      return 0;
-    }
-
-    const activeIndex = getActiveIndex();
-
-    // Create container
-    const indicator = document.createElement('div');
-    indicator.className = 'section-progress-indicator';
-    indicator.setAttribute('aria-hidden', 'true');
-
-    for (let i = 0; i < 4; i++) {
-      const segment = document.createElement('span');
-      segment.className = 'progress-segment' + (i === activeIndex ? ' active' : '');
-      indicator.appendChild(segment);
-    }
-
-    document.body.appendChild(indicator);
-  })();
 });
