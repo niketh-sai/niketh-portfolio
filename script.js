@@ -760,104 +760,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* =========================================================
-     FEATURE 1: SMART AUTO-HIDING NAVIGATION (MOBILE)
-     - Initially hidden on mobile (prevents obstructing section headings)
-     - Hidden at top of page (scrollY <= topOffsetThreshold)
-     - Revealed only when scrolling upward after moving down the page
-     - Hidden on scrolling downward
-     - Hidden throughout swipe/tap navigation
-  ========================================================= */
-  (function initAutoHidingNavbar() {
-    const navbar = document.querySelector('.navbar');
-    if (!navbar) return;
 
-    let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
-    const scrollThreshold = 10;
-    const topOffsetThreshold = 60;
-    let ticking = false;
-
-    function isMobileView() {
-      return window.innerWidth <= 768;
-    }
-
-    function isMobileMenuOpen() {
-      const activeMenu = document.querySelector('.mobile-menu.open, .nav-links.open, .nav-menu.open, [aria-expanded="true"].mobile-toggle');
-      return Boolean(activeMenu);
-    }
-
-    // Ensure navbar is immediately hidden on mobile upon initialization
-    if (isMobileView()) {
-      navbar.classList.remove('nav-visible');
-    }
-
-    // Hide navbar when tapping any nav link
-    const navAnchors = navbar.querySelectorAll('a');
-    navAnchors.forEach(a => {
-      a.addEventListener('click', () => {
-        if (isMobileView()) {
-          navbar.classList.remove('nav-visible');
-        }
-      });
-    });
-
-    function updateNavVisibility() {
-      const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
-
-      // Desktop: remove mobile override class
-      if (!isMobileView()) {
-        navbar.classList.remove('nav-visible');
-        lastScrollY = currentScrollY;
-        ticking = false;
-        return;
-      }
-
-      // If mobile menu is open, show navbar
-      if (isMobileMenuOpen()) {
-        navbar.classList.add('nav-visible');
-        lastScrollY = currentScrollY;
-        ticking = false;
-        return;
-      }
-
-      // At or near top of page: keep navigation hidden
-      if (currentScrollY <= topOffsetThreshold) {
-        navbar.classList.remove('nav-visible');
-        lastScrollY = currentScrollY;
-        ticking = false;
-        return;
-      }
-
-      const diff = currentScrollY - lastScrollY;
-
-      // Only trigger if scroll delta exceeds threshold
-      if (Math.abs(diff) >= scrollThreshold) {
-        if (diff > 0) {
-          // Scrolling down: keep/make navigation hidden
-          navbar.classList.remove('nav-visible');
-        } else {
-          // Scrolling up: reveal navigation smoothly
-          navbar.classList.add('nav-visible');
-        }
-        lastScrollY = currentScrollY;
-      }
-
-      ticking = false;
-    }
-
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        window.requestAnimationFrame(updateNavVisibility);
-        ticking = true;
-      }
-    }, { passive: true });
-
-    window.addEventListener('resize', () => {
-      if (!isMobileView()) {
-        navbar.classList.remove('nav-visible');
-      }
-    }, { passive: true });
-  })();
 
   /* =========================================================
      FEATURE 2: MOBILE SWIPE NAVIGATION
@@ -1038,8 +941,6 @@ document.addEventListener("DOMContentLoaded", () => {
           // Apply directional exit animation (260ms duration):
           // Swipe left -> exit towards left (-30px)
           // Swipe right -> exit towards right (+30px)
-          const navEl = document.querySelector('.navbar');
-          if (navEl) navEl.classList.remove('nav-visible');
           document.body.classList.add('is-swiping');
           document.body.classList.add(direction === 'left' ? 'swipe-exit-left' : 'swipe-exit-right');
 

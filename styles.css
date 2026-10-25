@@ -179,21 +179,6 @@ body {
   z-index: 1000;
 }
 
-@media (max-width: 768px) {
-  .navbar {
-    transform: translateY(-120%);
-    opacity: 0;
-    pointer-events: none;
-    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
-                opacity 240ms cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: transform, opacity;
-  }
-  .navbar.nav-visible {
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: auto;
-  }
-}
 
 .logo {
   display: none;
