@@ -413,6 +413,14 @@ body {
   animation: heroFadeUp 0.9s var(--ease-out-expo) 0.5s forwards;
 }
 
+@media (max-width: 480px) {
+  .hero-description {
+    gap: 16px;
+    margin-bottom: 40px;
+    margin-left: 0;
+  }
+}
+
 .vertical-line {
   width: 3px;
   align-self: stretch;
@@ -1167,6 +1175,25 @@ body {
   gap: 12px;
   margin-bottom: 40px;
   flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .filter-container {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+    margin-bottom: 28px;
+    max-width: 100%;
+    scrollbar-width: none;
+  }
+  .filter-container::-webkit-scrollbar {
+    display: none;
+  }
+  .filter-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
 }
 
 .filter-btn {
@@ -2261,21 +2288,73 @@ body {
 }
 
 /* =========================================
+   MOBILE SECTION PROGRESS INDICATOR
+   Subtle 4-segment indicator for mobile navigation
+========================================= */
+.section-progress-indicator {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .section-progress-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    position: fixed;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+    background: rgba(18, 18, 18, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 6px 14px;
+    border-radius: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    transition: opacity 220ms ease, transform 220ms ease;
+  }
+
+  .progress-segment {
+    width: 18px;
+    height: 3px;
+    border-radius: 2px;
+    background: rgba(224, 224, 224, 0.28);
+    transition: background-color 260ms ease, width 260ms ease, box-shadow 260ms ease;
+  }
+
+  .progress-segment.active {
+    width: 28px;
+    background: var(--oneplus-red);
+    box-shadow: 0 0 8px var(--oneplus-red-glow);
+  }
+}
+
+/* =========================================
    RESPONSIVENESS
 ========================================= */
 @media (max-width: 768px) {
   .navbar {
-    top: 15px;
+    top: calc(12px + env(safe-area-inset-top, 0px));
     padding: 0 10px;
   }
 
   .nav-links {
-    gap: 15px;
-    padding: 10px 20px;
-    max-width: 92vw;
+    gap: 12px;
+    padding: 8px 16px;
+    max-width: 94vw;
     overflow-x: auto;
     white-space: nowrap;
     -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    padding: 6px 4px;
   }
 
   .nav-links::-webkit-scrollbar {
@@ -2393,31 +2472,6 @@ body {
     max-width: 100%;
   }
 
-  .principles-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  .principle-number {
-    font-size: 2rem;
-  }
-
-  .principle-card {
-    padding: 20px 18px;
-  }
-
-  .roles-row {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .role-badge {
-    justify-content: center;
-  }
-
-  .personal-details-strip {
-    gap: 8px;
-  }
 
   .detail-badge {
     font-size: 0.68rem;
@@ -2469,6 +2523,26 @@ body {
 }
 
 @media (max-width: 480px) {
+  .hero-container {
+    padding: calc(85px + env(safe-area-inset-top, 0px)) 5vw 45px;
+  }
+
+  .hero-title {
+    font-size: clamp(2.4rem, 12vw, 3.2rem);
+    letter-spacing: -1px;
+  }
+
+  .hero-description p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .pill-btn {
+    min-height: 44px;
+    padding: 12px 24px;
+    font-size: 0.72rem;
+  }
+
   .skills-grid {
     grid-template-columns: 1fr;
   }
@@ -2478,11 +2552,84 @@ body {
   }
 
   .content-section {
-    padding: 36px 6vw 60px;
+    padding: 36px 5vw 60px;
   }
 
   .what-i-bring-section {
-    padding: 28px 6vw 45px;
+    padding: 28px 5vw 45px;
+  }
+
+  .what-i-bring-inner {
+    padding: 26px 18px;
+  }
+
+  .philosophy-inner {
+    padding: 26px 18px;
+  }
+
+  .proj-card {
+    padding: 20px 16px;
+  }
+
+  .proj-header h3,
+  .proj-title {
+    font-size: 1.2rem;
+  }
+
+  .connect-icons {
+    gap: 22px;
+  }
+
+  .connect-icon {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .journey-entry {
+    padding: 16px 0;
+  }
+
+  .journey-role {
+    font-size: 1.15rem;
+  }
+
+  .lab-spec-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  .nav-links {
+    gap: 10px;
+    padding: 8px 14px;
+  }
+
+  .nav-links a {
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+  }
+
+  .pill-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .contact-buttons-wrapper {
+    width: 100%;
+  }
+
+  .connect-icons {
+    gap: 16px;
+    flex-wrap: wrap;
   }
 }
 

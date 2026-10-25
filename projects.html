@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
@@ -53,6 +53,15 @@
       <h2 class="section-title">THE BUILDS</h2>
       <p class="section-subtitle">ENGINEERED SYSTEMS &middot; PROTOTYPES &middot; EXPERIMENTS</p>
       <p class="repo-notice">Note: Some project repositories may be private or unavailable for public access.</p>
+
+      <!-- Filter Controls (Horizontally scrollable on mobile) -->
+      <div class="filter-container" role="tablist" aria-label="Filter projects by classification">
+        <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">ALL</button>
+        <button class="filter-btn" data-filter="ai-ml" role="tab" aria-selected="false">AI / ML</button>
+        <button class="filter-btn" data-filter="genai" role="tab" aria-selected="false">GENAI</button>
+        <button class="filter-btn" data-filter="mini-builds" role="tab" aria-selected="false">MINI BUILDS</button>
+        <button class="filter-btn" data-filter="experiments" role="tab" aria-selected="false">EXPERIMENTS</button>
+      </div>
 
       <!-- Projects Grid (Dynamic) -->
       <div class="projects-grid" id="projectsGrid">
@@ -147,12 +156,17 @@
   ];
 
   // Render Projects
-  function renderProjects() {
+  function renderProjects(filter = 'all') {
     const grid = document.getElementById('projectsGrid');
+    if (!grid) return;
 
     grid.innerHTML = '';
 
-    projectsData.forEach((project, index) => {
+    const filteredProjects = filter === 'all'
+      ? projectsData
+      : projectsData.filter(project => project.filters && project.filters.includes(filter));
+
+    filteredProjects.forEach((project, index) => {
       const card = document.createElement('article');
       card.className = 'proj-card';
       card.style.opacity = '1';
@@ -216,6 +230,20 @@
       grid.appendChild(card);
     });
   }
+
+  // Filter Event Listeners
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      const filter = btn.dataset.filter || 'all';
+      renderProjects(filter);
+    });
+  });
 
   // Initial render
   renderProjects();
