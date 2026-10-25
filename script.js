@@ -2,6 +2,43 @@ if ('scrollRestoration' in history) {
   history.scrollRestoration = 'manual';
 }
 
+// Handle incoming horizontal swipe transition on mobile
+(function handleEnteringSwipeTransition() {
+  if (typeof window === 'undefined') return;
+  const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) {
+    try { sessionStorage.removeItem('swipeNavDirection'); } catch (e) {}
+    return;
+  }
+
+  try {
+    const direction = sessionStorage.getItem('swipeNavDirection');
+    if (direction) {
+      sessionStorage.removeItem('swipeNavDirection');
+      // If previous page swiped left, new section enters from right
+      // If previous page swiped right, new section enters from left
+      const enterClass = direction === 'left' ? 'swipe-enter-from-right' : 'swipe-enter-from-left';
+      document.documentElement.classList.add(enterClass);
+
+      window.addEventListener('DOMContentLoaded', () => {
+        document.body.classList.add(enterClass);
+        // Double rAF ensures DOM paint before transition begins
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            document.body.classList.add('swipe-enter-active');
+            document.body.classList.remove(enterClass);
+            document.documentElement.classList.remove(enterClass);
+
+            setTimeout(() => {
+              document.body.classList.remove('swipe-enter-active');
+            }, 450);
+          });
+        });
+      }, { once: true });
+    }
+  } catch (err) {}
+})();
+
 document.addEventListener("DOMContentLoaded", () => {
 
   // Preloader removal handled by CSS animation (fadeOut) & sessionStorage
@@ -946,16 +983,45 @@ document.addEventListener("DOMContentLoaded", () => {
       if (targetIndex !== -1 && targetIndex !== currentIndex) {
         isNavigating = true;
         const targetUrl = SECTIONS[targetIndex].url;
+        const direction = deltaX < 0 ? 'left' : 'right';
+
+        // Synchronise active navigation links and progress segments immediately
+        const navLinks = document.querySelectorAll('.nav-links a');
+        navLinks.forEach((link, idx) => {
+          if (idx === targetIndex) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+
+        const progressSegments = document.querySelectorAll('.progress-segment');
+        progressSegments.forEach((seg, idx) => {
+          if (idx === targetIndex) {
+            seg.classList.add('active');
+          } else {
+            seg.classList.remove('active');
+          }
+        });
 
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         if (prefersReducedMotion) {
           window.location.href = targetUrl;
         } else {
-          document.body.classList.add('portfolio-page-transitioning');
+          // Store swipe transition direction for the entering page
+          try {
+            sessionStorage.setItem('swipeNavDirection', direction);
+          } catch (err) {}
+
+          // Apply directional exit animation:
+          // Swipe left -> exit towards left
+          // Swipe right -> exit towards right
+          document.body.classList.add(direction === 'left' ? 'swipe-exit-left' : 'swipe-exit-right');
+
           setTimeout(() => {
             window.location.href = targetUrl;
-          }, 80);
+          }, 360);
         }
       }
     }, { passive: true });

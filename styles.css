@@ -2247,8 +2247,15 @@ body {
   .navbar {
     transition: none !important;
   }
-  .portfolio-page-transitioning {
+  .portfolio-page-transitioning,
+  .swipe-exit-left,
+  .swipe-exit-right,
+  .swipe-enter-left,
+  .swipe-enter-right,
+  .swipe-enter-active {
     transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
   }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -2281,10 +2288,45 @@ body {
   }
 }
 
-/* Mobile swipe page transition */
-.portfolio-page-transitioning {
-  opacity: 0.85;
-  transition: opacity 150ms ease;
+/* Mobile swipe directional page transitions */
+@media (max-width: 768px) {
+  main {
+    will-change: transform, opacity;
+  }
+
+  /* Exit transitions */
+  .swipe-exit-left main {
+    transform: translateX(-40px);
+    opacity: 0.15;
+    transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 380ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .swipe-exit-right main {
+    transform: translateX(40px);
+    opacity: 0.15;
+    transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 380ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Enter starting states (applied prior to paint) */
+  .swipe-enter-from-right main {
+    transform: translateX(45px);
+    opacity: 0.15;
+  }
+
+  .swipe-enter-from-left main {
+    transform: translateX(-45px);
+    opacity: 0.15;
+  }
+
+  /* Enter active transition back to resting state */
+  .swipe-enter-active main {
+    transform: translateX(0);
+    opacity: 1;
+    transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
 }
 
 /* =========================================
