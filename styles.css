@@ -181,11 +181,17 @@ body {
 
 @media (max-width: 768px) {
   .navbar {
-    transition: transform 220ms cubic-bezier(0.25, 1, 0.5, 1);
-    will-change: transform;
-  }
-  .navbar.nav-hidden {
     transform: translateY(-120%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform, opacity;
+  }
+  .navbar.nav-visible {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
   }
 }
 
@@ -2288,44 +2294,44 @@ body {
   }
 }
 
-/* Mobile swipe directional page transitions */
+/* Mobile swipe directional page transitions (60 FPS GPU-accelerated) */
 @media (max-width: 768px) {
-  main {
+  body.is-swiping main {
     will-change: transform, opacity;
   }
 
   /* Exit transitions */
   .swipe-exit-left main {
-    transform: translateX(-40px);
-    opacity: 0.15;
-    transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
-                opacity 380ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translate3d(-30px, 0, 0);
+    opacity: 0.05;
+    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 260ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .swipe-exit-right main {
-    transform: translateX(40px);
-    opacity: 0.15;
-    transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
-                opacity 380ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translate3d(30px, 0, 0);
+    opacity: 0.05;
+    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 260ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  /* Enter starting states (applied prior to paint) */
+  /* Enter starting states (applied in <head> prior to first paint) */
   .swipe-enter-from-right main {
-    transform: translateX(45px);
-    opacity: 0.15;
+    transform: translate3d(30px, 0, 0) !important;
+    opacity: 0.05 !important;
   }
 
   .swipe-enter-from-left main {
-    transform: translateX(-45px);
-    opacity: 0.15;
+    transform: translate3d(-30px, 0, 0) !important;
+    opacity: 0.05 !important;
   }
 
   /* Enter active transition back to resting state */
   .swipe-enter-active main {
-    transform: translateX(0);
-    opacity: 1;
-    transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
-                opacity 420ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translate3d(0, 0, 0) !important;
+    opacity: 1 !important;
+    transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 280ms cubic-bezier(0.22, 1, 0.36, 1) !important;
   }
 }
 

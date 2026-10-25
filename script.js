@@ -2,41 +2,34 @@ if ('scrollRestoration' in history) {
   history.scrollRestoration = 'manual';
 }
 
-// Handle incoming horizontal swipe transition on mobile
+// Handle incoming horizontal swipe transition on mobile (60 FPS GPU-accelerated)
 (function handleEnteringSwipeTransition() {
   if (typeof window === 'undefined') return;
   const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReduced) {
+    document.documentElement.classList.remove('swipe-enter-from-right', 'swipe-enter-from-left');
     try { sessionStorage.removeItem('swipeNavDirection'); } catch (e) {}
     return;
   }
 
-  try {
-    const direction = sessionStorage.getItem('swipeNavDirection');
-    if (direction) {
-      sessionStorage.removeItem('swipeNavDirection');
-      // If previous page swiped left, new section enters from right
-      // If previous page swiped right, new section enters from left
-      const enterClass = direction === 'left' ? 'swipe-enter-from-right' : 'swipe-enter-from-left';
-      document.documentElement.classList.add(enterClass);
+  // Check if documentElement was already tagged by the head script
+  const isFromRight = document.documentElement.classList.contains('swipe-enter-from-right');
+  const isFromLeft = document.documentElement.classList.contains('swipe-enter-from-left');
 
-      window.addEventListener('DOMContentLoaded', () => {
-        document.body.classList.add(enterClass);
-        // Double rAF ensures DOM paint before transition begins
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            document.body.classList.add('swipe-enter-active');
-            document.body.classList.remove(enterClass);
-            document.documentElement.classList.remove(enterClass);
+  if (isFromRight || isFromLeft) {
+    const enterClass = isFromRight ? 'swipe-enter-from-right' : 'swipe-enter-from-left';
+    document.body.classList.add(enterClass, 'is-swiping');
 
-            setTimeout(() => {
-              document.body.classList.remove('swipe-enter-active');
-            }, 450);
-          });
-        });
-      }, { once: true });
-    }
-  } catch (err) {}
+    requestAnimationFrame(() => {
+      document.body.classList.add('swipe-enter-active');
+      document.body.classList.remove(enterClass);
+      document.documentElement.classList.remove(enterClass);
+
+      setTimeout(() => {
+        document.body.classList.remove('swipe-enter-active', 'is-swiping');
+      }, 300);
+    });
+  }
 })();
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -769,6 +762,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* =========================================================
      FEATURE 1: SMART AUTO-HIDING NAVIGATION (MOBILE)
+     - Initially hidden on mobile (prevents obstructing section headings)
+     - Hidden at top of page (scrollY <= topOffsetThreshold)
+     - Revealed only when scrolling upward after moving down the page
+     - Hidden on scrolling downward
+     - Hidden throughout swipe/tap navigation
   ========================================================= */
   (function initAutoHidingNavbar() {
     const navbar = document.querySelector('.navbar');
@@ -776,7 +774,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
     const scrollThreshold = 10;
-    const topOffsetThreshold = 50;
+    const topOffsetThreshold = 60;
     let ticking = false;
 
     function isMobileView() {
@@ -788,20 +786,43 @@ document.addEventListener("DOMContentLoaded", () => {
       return Boolean(activeMenu);
     }
 
+    // Ensure navbar is immediately hidden on mobile upon initialization
+    if (isMobileView()) {
+      navbar.classList.remove('nav-visible');
+    }
+
+    // Hide navbar when tapping any nav link
+    const navAnchors = navbar.querySelectorAll('a');
+    navAnchors.forEach(a => {
+      a.addEventListener('click', () => {
+        if (isMobileView()) {
+          navbar.classList.remove('nav-visible');
+        }
+      });
+    });
+
     function updateNavVisibility() {
       const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
 
-      // On desktop or when mobile menu is open, ensure navbar is visible
-      if (!isMobileView() || isMobileMenuOpen()) {
-        navbar.classList.remove('nav-hidden');
+      // Desktop: remove mobile override class
+      if (!isMobileView()) {
+        navbar.classList.remove('nav-visible');
         lastScrollY = currentScrollY;
         ticking = false;
         return;
       }
 
-      // Always show when near or at the top of page
+      // If mobile menu is open, show navbar
+      if (isMobileMenuOpen()) {
+        navbar.classList.add('nav-visible');
+        lastScrollY = currentScrollY;
+        ticking = false;
+        return;
+      }
+
+      // At or near top of page: keep navigation hidden
       if (currentScrollY <= topOffsetThreshold) {
-        navbar.classList.remove('nav-hidden');
+        navbar.classList.remove('nav-visible');
         lastScrollY = currentScrollY;
         ticking = false;
         return;
@@ -812,11 +833,11 @@ document.addEventListener("DOMContentLoaded", () => {
       // Only trigger if scroll delta exceeds threshold
       if (Math.abs(diff) >= scrollThreshold) {
         if (diff > 0) {
-          // Scrolling down: hide
-          navbar.classList.add('nav-hidden');
+          // Scrolling down: keep/make navigation hidden
+          navbar.classList.remove('nav-visible');
         } else {
-          // Scrolling up: reveal
-          navbar.classList.remove('nav-hidden');
+          // Scrolling up: reveal navigation smoothly
+          navbar.classList.add('nav-visible');
         }
         lastScrollY = currentScrollY;
       }
@@ -833,7 +854,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.addEventListener('resize', () => {
       if (!isMobileView()) {
-        navbar.classList.remove('nav-hidden');
+        navbar.classList.remove('nav-visible');
       }
     }, { passive: true });
   })();
@@ -1014,14 +1035,17 @@ document.addEventListener("DOMContentLoaded", () => {
             sessionStorage.setItem('swipeNavDirection', direction);
           } catch (err) {}
 
-          // Apply directional exit animation:
-          // Swipe left -> exit towards left
-          // Swipe right -> exit towards right
+          // Apply directional exit animation (260ms duration):
+          // Swipe left -> exit towards left (-30px)
+          // Swipe right -> exit towards right (+30px)
+          const navEl = document.querySelector('.navbar');
+          if (navEl) navEl.classList.remove('nav-visible');
+          document.body.classList.add('is-swiping');
           document.body.classList.add(direction === 'left' ? 'swipe-exit-left' : 'swipe-exit-right');
 
           setTimeout(() => {
             window.location.href = targetUrl;
-          }, 360);
+          }, 240);
         }
       }
     }, { passive: true });

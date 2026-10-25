@@ -2,6 +2,21 @@
 <html lang="en">
 
 <head>
+  <script>
+    (function () {
+      try {
+        if (window.innerWidth <= 768 && window.sessionStorage) {
+          var dir = sessionStorage.getItem('swipeNavDirection');
+          if (dir) {
+            sessionStorage.removeItem('swipeNavDirection');
+            var cls = dir === 'left' ? 'swipe-enter-from-right' : 'swipe-enter-from-left';
+            document.documentElement.classList.add(cls);
+          }
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
